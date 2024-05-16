@@ -21,7 +21,6 @@ public class CountriesService {
         JSONObject jsonObject = new JSONObject(countriesInfo);
         String data = jsonObject.getString("data");
         JSONArray jsonArray = new JSONArray(data);
-        StringBuilder string = new StringBuilder();
         ArrayList<CountryName> countries = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             String countryName = jsonArray.getJSONObject(i).getString("country");
