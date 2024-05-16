@@ -1,5 +1,9 @@
 package WebProgrammingProject.Project.Services;
 
+import WebProgrammingProject.Project.Models.CityWeatherData;
+import WebProgrammingProject.Project.Models.CountriesList;
+import WebProgrammingProject.Project.Models.CountryData;
+import WebProgrammingProject.Project.Models.CountryName;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -7,24 +11,26 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 
 public class CountriesService {
 
-    public String getCountriesInfoFromExternalService() throws Exception {
+    public CountriesList getCountriesInfoFromExternalService() throws Exception {
         String getCountryInfoURI = "https://countriesnow.space/api/v0.1/countries";
         String countriesInfo = sendRequest(getCountryInfoURI);
         JSONObject jsonObject = new JSONObject(countriesInfo);
         String data = jsonObject.getString("data");
         JSONArray jsonArray = new JSONArray(data);
         StringBuilder string = new StringBuilder();
+        ArrayList<CountryName> countries = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             String countryName = jsonArray.getJSONObject(i).getString("country");
-            string.append("name: ").append(countryName).append("\n");
+            countries.add(new CountryName(countryName));
         }
-        return String.valueOf(string);
+        return new CountriesList(countries, jsonArray.length());
     }
 
-    public String getCountyInfo(String countryName) throws Exception {
+    public CountryData getCountyInfo(String countryName) throws Exception {
         String countryInfo = requestCountryInfo(countryName);
         JSONObject jsonObject = (new JSONArray(countryInfo)).getJSONObject(0);
         String capital = jsonObject.getString("capital");
@@ -32,12 +38,7 @@ public class CountriesService {
         String population = jsonObject.getString("population");
         String populationGrowth = jsonObject.getString("pop_growth");
         String currency = jsonObject.getString("currency");
-        return "name: " + countryName + "\n" +
-                "capital: " + capital + "\n" +
-                "iso2: " + iso2 + "\n" +
-                "population: " + population + "\n" +
-                "pop_growth: " + populationGrowth + "\n" +
-                "currency: " + currency;
+        return new CountryData(countryName, capital, iso2, Float.parseFloat(population), Float.parseFloat(populationGrowth), currency);
     }
 
     private String requestCountryInfo(String countryName) throws Exception {
@@ -45,7 +46,7 @@ public class CountriesService {
         return sendRequest(getCountryInfoURI);
     }
 
-    public String getCountryCapitalWeatherInfo(String countryName) throws Exception {
+    public CityWeatherData getCountryCapitalWeatherInfo(String countryName) throws Exception {
         String capital = findCountryCapital(countryName);
         String capitalWeatherInfo = getCityWeatherInfo(capital);
         JSONObject JSONObject = new JSONObject(capitalWeatherInfo);
@@ -53,12 +54,7 @@ public class CountriesService {
         String windDegrees = JSONObject.getString("wind_degrees");
         String temperature = JSONObject.getString("temp");
         String humidity = JSONObject.getString("humidity");
-        return "country_name: " + countryName + "\n" +
-                "capital: " + capital + "\n" +
-                "wind_speed: " + windSpeed + "\n" +
-                "wind_degrees: " + windDegrees + "\n" +
-                "temp: " + temperature + "\n" +
-                "humidity: " + humidity;
+        return new CityWeatherData(countryName, capital, Float.parseFloat(windSpeed), Float.parseFloat(windDegrees), Float.parseFloat(temperature), Float.parseFloat(humidity));
     }
 
     private String findCountryCapital(String countryName) throws Exception {
