@@ -1,27 +1,39 @@
 package WebProgrammingProject.Project.Controllers;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import WebProgrammingProject.Project.Services.CountriesService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/countries")
 public class CountriesController {
 
-    @GetMapping
-    public String getCountryNames(){
-        return "Just Iran!";
+    public CountriesService service = new CountriesService();
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String getCountriesList() {
+        try {
+            return service.getCountriesInfoFromExternalService();
+        } catch (Exception e) {
+            return "Sorry... We are facing a problem";
+        }
     }
 
-    @GetMapping("/{countryName}")
-    public String getCountryInfo(@PathVariable("countryName") String countryName){
-        return countryName + " is a good country!";
+    @RequestMapping(value = "/{countryName}", method = RequestMethod.GET)
+    public String getCountryInfo(@PathVariable("countryName") String countryName) {
+        try {
+            return service.getCountyInfo(countryName);
+        } catch (Exception e) {
+            return "Sorry... We are facing a problem";
+        }
     }
 
-    @GetMapping("/{countryName}/weather")
-    public String getCountryCapitalWeatherInfo(@PathVariable("countryName") String countryName){
-        return "The weather of " + countryName + "'s capital is great!";
+    @RequestMapping(value = "/{countryName}/weather", method = RequestMethod.GET)
+    public String getCountryCapitalWeatherInfo(@PathVariable("countryName") String countryName) {
+        try {
+            return service.getCountryCapitalWeatherInfo(countryName);
+        } catch (Exception e) {
+            return "Sorry... We are facing a problem";
+        }
     }
 }
