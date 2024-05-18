@@ -1,9 +1,9 @@
 package WebProgrammingProject.Project.Services;
 
-import WebProgrammingProject.Project.models.CityWeatherData;
-import WebProgrammingProject.Project.models.CountriesList;
-import WebProgrammingProject.Project.models.CountryData;
-import WebProgrammingProject.Project.models.CountryName;
+import WebProgrammingProject.Project.Models.CityWeatherData;
+import WebProgrammingProject.Project.Models.CountriesList;
+import WebProgrammingProject.Project.Models.CountryData;
+import WebProgrammingProject.Project.Models.CountryName;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

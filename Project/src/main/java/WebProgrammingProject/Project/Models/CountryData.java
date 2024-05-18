@@ -1,4 +1,4 @@
-package WebProgrammingProject.Project.models;
+package WebProgrammingProject.Project.Models;
 
 
 import lombok.Data;

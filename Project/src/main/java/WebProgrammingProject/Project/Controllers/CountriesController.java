@@ -1,9 +1,9 @@
 package WebProgrammingProject.Project.Controllers;
 
 
-import WebProgrammingProject.Project.models.CityWeatherData;
-import WebProgrammingProject.Project.models.CountriesList;
-import WebProgrammingProject.Project.models.CountryData;
+import WebProgrammingProject.Project.Models.CityWeatherData;
+import WebProgrammingProject.Project.Models.CountriesList;
+import WebProgrammingProject.Project.Models.CountryData;
 import WebProgrammingProject.Project.Services.CountriesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
