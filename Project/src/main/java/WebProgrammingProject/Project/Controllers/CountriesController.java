@@ -5,6 +5,7 @@ import WebProgrammingProject.Project.Models.CityWeatherData;
 import WebProgrammingProject.Project.Models.CountriesList;
 import WebProgrammingProject.Project.Models.CountryData;
 import WebProgrammingProject.Project.Services.CountriesService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,8 @@ public class CountriesController {
     public CountriesService service = new CountriesService();
 
     @GetMapping
-    ResponseEntity<CountriesList> getCountriesList() {
+    @CacheEvict(value = "countries", allEntries = true)
+    public ResponseEntity<CountriesList> getCountriesList() {
         try {
             return ResponseEntity.ok().body(service.getCountriesInfoFromExternalService());
         } catch (Exception e) {
@@ -25,7 +27,8 @@ public class CountriesController {
     }
 
     @GetMapping("/{countryName}")
-    ResponseEntity<CountryData> getCountryInfo(@PathVariable("countryName") String countryName) {
+    @CacheEvict(value = "{countryName} info", allEntries = true)
+    public ResponseEntity<CountryData> getCountryInfo(@PathVariable("countryName") String countryName) {
         try {
             CountryData countryData = service.getCountyInfo(countryName);
             return ResponseEntity.ok().body(countryData);
@@ -35,7 +38,8 @@ public class CountriesController {
     }
 
     @GetMapping("/{countryName}/weather")
-    ResponseEntity<CityWeatherData> getCountryCapitalWeatherInfo(@PathVariable("countryName") String countryName) {
+    @CacheEvict("{countryName}'s capital weather info")
+    public ResponseEntity<CityWeatherData> getCountryCapitalWeatherInfo(@PathVariable("countryName") String countryName) {
         try {
             return ResponseEntity.ok().body(service.getCountryCapitalWeatherInfo(countryName));
         } catch (Exception e) {
