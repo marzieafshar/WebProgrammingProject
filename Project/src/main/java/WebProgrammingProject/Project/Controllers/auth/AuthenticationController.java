@@ -1,6 +1,5 @@
 package WebProgrammingProject.Project.Controllers.auth;
 
-
 import WebProgrammingProject.Project.Controllers.Requests.AuthenticateRequest;
 import WebProgrammingProject.Project.Controllers.Requests.RegisterRequest;
 import WebProgrammingProject.Project.Controllers.Requests.TokenRequest;
@@ -12,13 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+//@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
