@@ -6,6 +6,8 @@ import WebProgrammingProject.Project.Models.CountryData;
 import WebProgrammingProject.Project.Models.CountryName;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -13,8 +15,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
+@Service
 public class CountriesService {
 
+    @Cacheable(value="countries")
     public CountriesList getCountriesInfoFromExternalService() throws Exception {
         String getCountryInfoURI = "https://countriesnow.space/api/v0.1/countries";
         String countriesInfo = sendRequest(getCountryInfoURI);

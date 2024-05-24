@@ -5,7 +5,6 @@ import WebProgrammingProject.Project.Models.CityWeatherData;
 import WebProgrammingProject.Project.Models.CountriesList;
 import WebProgrammingProject.Project.Models.CountryData;
 import WebProgrammingProject.Project.Services.CountriesService;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +16,6 @@ public class CountriesController {
     public CountriesService service = new CountriesService();
 
     @GetMapping
-    @CacheEvict(value = "countries", allEntries = true)
     public ResponseEntity<CountriesList> getCountriesList() {
         try {
             return ResponseEntity.ok().body(service.getCountriesInfoFromExternalService());
@@ -27,7 +25,6 @@ public class CountriesController {
     }
 
     @GetMapping("/{countryName}")
-    @CacheEvict(value = "{countryName} info", allEntries = true)
     public ResponseEntity<CountryData> getCountryInfo(@PathVariable("countryName") String countryName) {
         try {
             CountryData countryData = service.getCountyInfo(countryName);
@@ -38,7 +35,6 @@ public class CountriesController {
     }
 
     @GetMapping("/{countryName}/weather")
-    @CacheEvict("{countryName}'s capital weather info")
     public ResponseEntity<CityWeatherData> getCountryCapitalWeatherInfo(@PathVariable("countryName") String countryName) {
         try {
             return ResponseEntity.ok().body(service.getCountryCapitalWeatherInfo(countryName));
