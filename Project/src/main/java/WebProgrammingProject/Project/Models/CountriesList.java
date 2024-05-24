@@ -1,19 +1,21 @@
 package WebProgrammingProject.Project.Models;
 
+import jakarta.persistence.Id;
 import lombok.Data;
-import org.springframework.data.redis.core.RedisHash;
+
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-@RedisHash
 @Data
+//@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class CountriesList implements Serializable {
     ArrayList<CountryName> countryNames;
     int count;
-
-    public CountriesList(ArrayList<CountryName> countryNames, int count) {
-        this.countryNames = countryNames;
-        this.count = count;
-    }
 }

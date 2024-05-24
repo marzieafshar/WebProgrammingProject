@@ -5,15 +5,17 @@ import WebProgrammingProject.Project.Models.CityWeatherData;
 import WebProgrammingProject.Project.Models.CountriesList;
 import WebProgrammingProject.Project.Models.CountryData;
 import WebProgrammingProject.Project.Services.CountriesService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/countries")
 public class CountriesController {
 
-    public CountriesService service = new CountriesService();
+    public CountriesService service;
 
     @GetMapping
     public ResponseEntity<CountriesList> getCountriesList() {

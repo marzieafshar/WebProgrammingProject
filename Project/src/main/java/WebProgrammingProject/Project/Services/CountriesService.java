@@ -4,8 +4,11 @@ import WebProgrammingProject.Project.Models.CityWeatherData;
 import WebProgrammingProject.Project.Models.CountriesList;
 import WebProgrammingProject.Project.Models.CountryData;
 import WebProgrammingProject.Project.Models.CountryName;
+import WebProgrammingProject.Project.Repositories.CountryInfoRepository;
+import lombok.AllArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +18,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
+@AllArgsConstructor
 @Service
 public class CountriesService {
 
+    CountryInfoRepository countryInfoRepository;
     @Cacheable(value="countries")
     public CountriesList getCountriesInfoFromExternalService() throws Exception {
         String getCountryInfoURI = "https://countriesnow.space/api/v0.1/countries";
@@ -33,7 +38,13 @@ public class CountriesService {
         return new CountriesList(countries, jsonArray.length());
     }
 
+    @Cacheable("#countryName")
     public CountryData getCountyInfo(String countryName) throws Exception {
+        try{
+            return countryInfoRepository.findById(countryName)
+                    .orElseThrow(RuntimeException::new);
+        }
+        catch (RuntimeException runtimeException){
         String countryInfo = requestCountryInfo(countryName);
         JSONObject jsonObject = (new JSONArray(countryInfo)).getJSONObject(0);
         String capital = jsonObject.getString("capital");
@@ -41,8 +52,10 @@ public class CountriesService {
         String population = jsonObject.getString("population");
         String populationGrowth = jsonObject.getString("pop_growth");
         String currency = jsonObject.getString("currency");
-        return new CountryData(countryName, capital, iso2, Float.parseFloat(population), Float.parseFloat(populationGrowth), currency);
-    }
+        CountryData countryData = new CountryData(countryName, capital, iso2, Float.parseFloat(population), Float.parseFloat(populationGrowth), currency);
+        countryInfoRepository.save(countryData);
+        return countryData;
+    }}
 
     private String requestCountryInfo(String countryName) throws Exception {
         String getCountryInfoURI = "https://api.api-ninjas.com/v1/country?name=" + countryName;
