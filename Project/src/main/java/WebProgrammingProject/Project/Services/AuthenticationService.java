@@ -56,6 +56,9 @@ public class AuthenticationService {
         if(userRepository.existsByEmail(request.getEmail()))
             return new ResponseEntity(new ApiResponse(false, "Email is already taken!", 400, null),
                     HttpStatus.BAD_REQUEST);
+        if(request.getEmail().equals(adminUserService.getAdminUsername()))
+            return new ResponseEntity(new ApiResponse(false, "This email can not be use!", 400, null),
+                    HttpStatus.BAD_REQUEST);
 
         var user = User.builder()
                 .firstName(request.getFirstName())

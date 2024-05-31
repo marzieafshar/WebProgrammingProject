@@ -53,7 +53,7 @@ public class TokensService {
             token.setUserId(loggedInUser.getId());
             token.setTokenNumber(request.getName());
             tokenRepository.save(token);
-            TokenDTO dto = new TokenDTO(token.getTokenNumber(), token.getTokenString(), token.getExpireDate());
+            TokenDTO dto = new TokenDTO(request.getName(), token.getTokenString(), token.getExpireDate());
             tokenDTORepository.save(dto);
             return ResponseEntity.ok(dto);
         }catch (Exception e){
